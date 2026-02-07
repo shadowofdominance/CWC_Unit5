@@ -5,15 +5,20 @@ public class Target : MonoBehaviour
 {
 
     private Rigidbody targetRb;
+    public ParticleSystem explosionParticle;
+
     private float minSpeed = 12;
     private float maxSpeed = 16;
     private float maxTorque = 10;
     private float xRange = 4;
     private float ySpawnRange = -1;
 
+    public int pointValue;
+
     public InputActionAsset inputActions;
     private InputAction clickAction;
 
+    private GameManager gameManager;
     private void OnEnable()
     {
         if (inputActions != null)
@@ -30,6 +35,7 @@ public class Target : MonoBehaviour
     }
     private void Awake()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         targetRb = GetComponent<Rigidbody>();
         if (inputActions != null)
         {
@@ -63,6 +69,8 @@ public class Target : MonoBehaviour
             if (hit.collider.gameObject == gameObject)
             {
                 Destroy(gameObject);
+                gameManager.UpdateScore(pointValue);
+                Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             }
         }
         else
