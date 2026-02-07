@@ -68,9 +68,12 @@ public class Target : MonoBehaviour
         {
             if (hit.collider.gameObject == gameObject)
             {
-                Destroy(gameObject);
-                gameManager.UpdateScore(pointValue);
-                Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+                if (gameManager.isGameActive)
+                {
+                    Destroy(gameObject);
+                    gameManager.UpdateScore(pointValue);
+                    Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+                }
             }
         }
         else
@@ -81,6 +84,11 @@ public class Target : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+        if (!gameObject.CompareTag("BadObject"))
+        {
+            gameManager.GameOver();
+        }
+
     }
     private Vector3 RandomForce()
     {
