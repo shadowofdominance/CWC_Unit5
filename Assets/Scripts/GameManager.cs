@@ -17,17 +17,16 @@ public class GameManager : MonoBehaviour
     public List<GameObject> targets;
     private float spawnRate;
 
+    public GameObject titleScreen;
+
     public bool isGameActive;
     private void Start()
     {
-        isGameActive = true;
-        StartCoroutine(SpawnTarget());
-        score = 0;
-        UpdateScore(0);
+
     }
     private IEnumerator SpawnTarget()
     {
-        spawnRate = Random.Range(1, 3);
+        spawnRate = 1f;
         while (isGameActive)
         {
             yield return new WaitForSeconds(spawnRate);
@@ -50,5 +49,15 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void StartGame(int difficulty)
+    {
+        isGameActive = true;
+        StartCoroutine(SpawnTarget());
+        spawnRate /= difficulty;
+        score = 0;
+        UpdateScore(0);
+
+        titleScreen.gameObject.SetActive(false);
     }
 }
